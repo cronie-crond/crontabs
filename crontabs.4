@@ -1,0 +1,46 @@
+.TH CRONTABS 4 2010-10-18 "Marcela Mašláňová" "Crontabs users' Manual"
+.SH NAME
+crontabs \- configuration and scripts for running periodical jobs
+.SH SYNOPSIS
+run-parts [--list] <directory>
+.SH DESCRIPTION
+Crontabs is historical name for 
+.B run-parts
+script and system crontab.
+.B Run-parts
+runs all executables in the specified directory. The execution of files
+can be allowed or denied by creating file 
+.B jobs.allow
+ or 
+.B jobs.deny
+which worked similar as other allow/deny config files. The file must be
+created in the specified directory.
+
+.B --list
+option only lists files from directory, which will be executed.
+
+Historically the crontab file contained configuration which called 
+.B run-parts
+on files in 
+.I cron.{daily,weekly,monthly}
+directories. These jobs are now run
+indirectly through 
+.B anacron 
+to prevent conflicts between 
+.B cron 
+and 
+.B anacron.
+That means the 
+.B anacron 
+package has to be installed if the jobs in these
+directories should be running. Refer to the 
+.B anacron(8) 
+how to limit the time of day of the job execution.
+
+.SH EXAMPLE
+.I /etc/cron.daily/jobs.deny
+could contain for example 
+.B 0logwatch 
+which forbid execution of this script.
+.SH "SEE ALSO"
+.B anacron(8), crontab(5)
