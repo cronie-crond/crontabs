@@ -1,4 +1,4 @@
-.TH CRONTABS 4 2010-10-18 "Marcela Mašláňová" "Crontabs users' Manual"
+.TH CRONTABS 4 2010-11-5 "Marcela Mašláňová" "Crontabs users' Manual"
 .SH NAME
 crontabs \- configuration and scripts for running periodical jobs
 .SH SYNOPSIS
@@ -17,7 +17,13 @@ which worked similar as other allow/deny config files. The file must be
 created in the specified directory.
 
 .B --list
-option only lists files from directory, which will be executed.
+print names of all files (not limited to executables), but don't run
+them. This option can't be used with 
+.B test
+option.
+
+.B --test
+print names of files, which would be run.
 
 Historically the crontab file contained configuration which called 
 .B run-parts
