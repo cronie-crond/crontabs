@@ -39,7 +39,7 @@ if [ ! -d $1 ]; then
 fi
 
 # Ignore *~ and *, scripts
-for i in $(LC_ALL=C; echo $1*[^~,]) ; do
+for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	[ -d $i ] && continue
 	# Don't run *.{rpmsave,rpmorig,rpmnew,swp,cfsaved} scripts
 	[ "${i%.cfsaved}" != "${i}" ] && continue
@@ -64,9 +64,9 @@ for i in $(LC_ALL=C; echo $1*[^~,]) ; do
 			grep -q "^$(basename $i)$" $1/whitelist && continue
 		fi
 
-		if [[ $list == 1 ]]; then
+		if [ ${list:-0} == 1 ]; then
 			echo $i;
-		elif [ $test == 1 ]; then
+		elif [ ${test:-0} == 1 ]; then
 			if [ -x $i ]; then
 				echo $i;
 			fi
