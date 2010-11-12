@@ -2,7 +2,9 @@
 .SH NAME
 crontabs \- configuration and scripts for running periodical jobs
 .SH SYNOPSIS
-run-parts [--list] <directory>
+.B run-parts 
+.RB [ --list | --test ] \fP\fI<directory>\fP
+.br
 .SH DESCRIPTION
 Crontabs is historical name for 
 .B run-parts
@@ -15,16 +17,16 @@ can be allowed or denied by creating file
 .B jobs.deny
 which worked similar as other allow/deny config files. The file must be
 created in the specified directory.
-
+.TP
 .B --list
 print names of all files (not limited to executables), but don't run
 them. This option can't be used with 
 .B test
 option.
-
+.TP
 .B --test
 print names of files, which would be run.
-
+.PP
 Historically the crontab file contained configuration which called 
 .B run-parts
 on files in 
