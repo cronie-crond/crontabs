@@ -64,13 +64,14 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 			grep -q "^$(basename $i)$" $1/whitelist && continue
 		fi
 
-		if [ ${list:-0} == 1 ]; then
+		if [ ${list:-0} = 1 ]; then
 			echo $i;
-		elif [ ${test:-0} == 1 ]; then
-			if [ -x $i ]; then
+		elif [ -x $i ]; then
+			if [ ${test:-0} = 1 ]; then
 				echo $i;
+				continue
 			fi
-		else # run executable files
+			# run executable files
 			logger -p cron.notice -t "run-parts($1)[$$]" "starting $(basename $i)"
 			$i 2>&1 | awk -v "progname=$i" \
 			      'progname {
