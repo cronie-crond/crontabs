@@ -38,6 +38,10 @@ if [ ! -d $1 ]; then
 	exit 1
 fi
 
+if [ -f /etc/sysconfig/run-parts ]; then
+	. /etc/sysconfig/run-parts
+fi
+
 # Ignore *~ and *, scripts
 for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	[ -d $i ] && continue
@@ -71,6 +75,16 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 				echo $i;
 				continue
 			fi
+			if [ "$RANDOMIZE" != "" ]; then
+				let "rtime = $RANDOM"
+				if [ "$RANDOMTIME" != "" ]; then
+					let "rtime %= $RANDOMTIME"
+				else
+					let "rtime %= 300"
+				fi
+				sleep $rtime
+			fi
+
 			# run executable files
 			logger -p cron.notice -t "run-parts($1)[$$]" "starting $(basename $i)"
 			$i 2>&1 | awk -v "progname=$i" \
