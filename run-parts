@@ -86,14 +86,14 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 			fi
 
 			# run executable files
-			logger -p cron.notice -t "run-parts($1)[$$]" "starting $(basename $i)"
+			logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
 			$i 2>&1 | awk -v "progname=$i" \
 			      'progname {
 				   print progname ":\n"
 				   progname="";
 			       }
 			       { print; }'
-			logger -i -p cron.notice -t "run-parts($1)" "finished $(basename $i)"
+			logger -i -p cron.notice -t "run-parts" "($1) finished $(basename $i)"
 		fi
 	fi
 done
