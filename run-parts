@@ -93,7 +93,7 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 				   progname="";
 			       }
 			       { print; }'
-			logger -i -p cron.notice -t "run-parts" "($1) finished $(basename $i)"
+			logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
 		fi
 	fi
 done
