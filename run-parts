@@ -87,8 +87,8 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 
 			# run executable files
 			logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
-			echo -e '$i:\n'
-			$i
+			echo -e "$i:\n"
+			$i 2>&1
 			logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
 		fi
 	fi
