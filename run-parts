@@ -55,7 +55,7 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 
 	# jobs.deny prevents specific files from being executed
 	# jobs.allow prohibits all non-named jobs from being run.
-	# can be used in conjunction but there's no reason to do so. 
+	# can be used in conjunction but there's no reason to do so.
 	if [ -r $1/jobs.deny ]; then
 		grep -q "^$(basename $i)$" $1/jobs.deny && continue
 	fi
