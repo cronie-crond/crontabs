@@ -64,10 +64,6 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	fi
 
 	if [ -e $i ]; then
-		if [ -r $1/whitelist ]; then
-			grep -q "^$(basename $i)$" $1/whitelist && continue
-		fi
-
 		if [ ${list:-0} = 1 ]; then
 			echo $i;
 		elif [ -x $i ]; then
