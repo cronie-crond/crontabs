@@ -68,28 +68,30 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 		echo $i
 		continue
 	fi
-	if [ -x $i ]; then
-		if [ ${test:-0} = 1 ]; then
-			echo $i
-			continue
-		fi
-		if [ "$RANDOMIZE" != "" ]; then
-			let "rtime = $RANDOM"
-			if [ "$RANDOMTIME" != "" ]; then
-				let "rtime %= $RANDOMTIME"
-			else
-				let "rtime %= 300"
-			fi
-			sleep $rtime
-		fi
 
-		# run executable files
-		logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
-		$i 2>&1 | sed '1i\
+	[ -x $i ] || continue
+
+	if [ ${test:-0} = 1 ]; then
+		echo $i
+		continue
+	fi
+
+	if [ "$RANDOMIZE" != "" ]; then
+		let "rtime = $RANDOM"
+		if [ "$RANDOMTIME" != "" ]; then
+			let "rtime %= $RANDOMTIME"
+		else
+			let "rtime %= 300"
+		fi
+		sleep $rtime
+	fi
+
+	# run executable files
+	logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
+	$i 2>&1 | sed '1i\
 '"$i"':\
 '
-		logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
-	fi
+	logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
 done
 
 exit 0
