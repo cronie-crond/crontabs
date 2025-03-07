@@ -65,10 +65,10 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	fi
 
 	if [ ${list:-0} = 1 ]; then
-		echo $i;
+		echo $i
 	elif [ -x $i ]; then
 		if [ ${test:-0} = 1 ]; then
-			echo $i;
+			echo $i
 			continue
 		fi
 		if [ "$RANDOMIZE" != "" ]; then
