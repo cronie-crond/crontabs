@@ -77,12 +77,7 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	fi
 
 	if [ "$RANDOMIZE" != "" ]; then
-		let "rtime = $RANDOM"
-		if [ "$RANDOMTIME" != "" ]; then
-			let "rtime %= $RANDOMTIME"
-		else
-			let "rtime %= 300"
-		fi
+		let "rtime = $RANDOM % ${RANDOMTIME:-300}"
 		sleep $rtime
 	fi
 
