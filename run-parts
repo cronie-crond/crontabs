@@ -49,9 +49,9 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 	# Don't run *.{rpmsave,rpmorig,rpmnew,swp,cfsaved} scripts
 	[ "${i%.cfsaved}" != "${i}" ] && continue
 	[ "${i%.rpmsave}" != "${i}" ] && continue
-        [ "${i%.rpmorig}" != "${i}" ] && continue
-        [ "${i%.rpmnew}" != "${i}" ] && continue
-        [ "${i%.swp}" != "${i}" ] && continue
+	[ "${i%.rpmorig}" != "${i}" ] && continue
+	[ "${i%.rpmnew}" != "${i}" ] && continue
+	[ "${i%.swp}" != "${i}" ] && continue
 	[ "${i%,v}" != "${i}" ] && continue
 
 	# jobs.deny prevents specific files from being executed
