@@ -44,6 +44,7 @@ fi
 
 # Ignore *~ and *, scripts
 for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
+	[ -e $i ] || continue
 	[ -d $i ] && continue
 	# Don't run *.{rpmsave,rpmorig,rpmnew,swp,cfsaved} scripts
 	[ "${i%.cfsaved}" != "${i}" ] && continue
@@ -63,31 +64,29 @@ for i in $(LC_ALL=C; echo ${1%/}/*[^~,]) ; do
 		grep -q "^$(basename $i)$" $1/jobs.allow || continue
 	fi
 
-	if [ -e $i ]; then
-		if [ ${list:-0} = 1 ]; then
+	if [ ${list:-0} = 1 ]; then
+		echo $i;
+	elif [ -x $i ]; then
+		if [ ${test:-0} = 1 ]; then
 			echo $i;
-		elif [ -x $i ]; then
-			if [ ${test:-0} = 1 ]; then
-				echo $i;
-				continue
+			continue
+		fi
+		if [ "$RANDOMIZE" != "" ]; then
+			let "rtime = $RANDOM"
+			if [ "$RANDOMTIME" != "" ]; then
+				let "rtime %= $RANDOMTIME"
+			else
+				let "rtime %= 300"
 			fi
-			if [ "$RANDOMIZE" != "" ]; then
-				let "rtime = $RANDOM"
-				if [ "$RANDOMTIME" != "" ]; then
-					let "rtime %= $RANDOMTIME"
-				else
-					let "rtime %= 300"
-				fi
-				sleep $rtime
-			fi
+			sleep $rtime
+		fi
 
-			# run executable files
-			logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
-			$i 2>&1 | sed '1i\
+		# run executable files
+		logger -p cron.notice -t "run-parts[$$]" "($1) starting $(basename $i)"
+		$i 2>&1 | sed '1i\
 '"$i"':\
 '
-			logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
-		fi
+		logger -p cron.notice -t "run-parts[$$]" "($1) finished $(basename $i)"
 	fi
 done
 
